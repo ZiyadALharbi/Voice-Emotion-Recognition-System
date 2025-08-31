@@ -10,7 +10,7 @@ import xgboost as xgb
 class EmotionRecognitionPipeline:
     """Handles feature extraction and model prediction"""
 
-    def __init__(self, config_path="../models/config/config.json", model_dir="../models/"):
+    def __init__(self, config_path="models/config/config.json", model_dir="models/"):
         """
         Flow:
         1. load configuration [DONE]
