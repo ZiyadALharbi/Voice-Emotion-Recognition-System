@@ -89,7 +89,7 @@ graph TD
     E --> H[Config File]
   
     D --> I[Extract Features]
-    I --> J[Feature Vector 1584D]
+    I --> J[Feature Vector]
     J --> K[Audio Preprocessing]
   
     K --> L[XGBoost Prediction]
