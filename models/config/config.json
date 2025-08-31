@@ -1,0 +1,25 @@
+{
+  "sr": 16000,
+  "win_ms": 25,
+  "hop_ms": 10,
+  "n_fft": 1024,
+  "n_mels": 64,
+  "n_mfcc": 20,
+  "peak_target": 0.98,
+  "features": ["mfcc", "delta", "delta2", "logmel", "spectral_shape", "energy", "f0"],
+  "pooling": ["mean", "std", "median", "p10", "p90", "slope"],
+  "voiced_variant": true,
+  "augment": {
+    "enabled": false,
+    "copies": 1,
+    "trim_silence": true,
+    "p_gain": 0.7,
+    "p_noise": 0.7,
+    "p_shift": 0.5,
+    "p_pitch": 0.3,
+    "p_tempo": 0.3,
+    "p_reverb": 0.2,
+    "p_filter": 0.3
+  }
+}
+
