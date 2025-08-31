@@ -96,9 +96,9 @@ graph TD
     L --> M[Get Probabilities]
     M --> N[Select Best Emotion]
   
-    O --> P[Format Results]
-    P --> Q[Add Emoji]
-    Q --> R[Display Results]
+    N --> O[Format Results]
+    O --> P[Add Emoji]
+    P --> Q[Display Results]
 ```
 
 ### **Detailed Pipeline Steps**
