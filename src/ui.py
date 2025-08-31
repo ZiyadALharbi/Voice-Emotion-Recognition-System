@@ -181,7 +181,6 @@ def render_analyze():
     tab1, tab2 = st.tabs(["Upload (.wav)", "Record (≤10s)"])
 
     with tab1:
-        st.markdown("<div class='glass'>", unsafe_allow_html=True)
         f = st.file_uploader(" ", type=["wav"])
         if f:
             temp_file = "temp_uploaded.wav"
@@ -190,7 +189,6 @@ def render_analyze():
         st.markdown("</div>", unsafe_allow_html=True)
 
     with tab2:
-        st.markdown("<div class='glass'>", unsafe_allow_html=True)
         audio_bytes = audio_recorder()
         if audio_bytes:
             tf = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
