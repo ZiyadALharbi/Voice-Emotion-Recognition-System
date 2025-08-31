@@ -136,6 +136,7 @@ graph TD
 
 ## 🏗️ Project Structure
 
+```
 machine-learning-project-team4/
 │
 ├── src/                          # Deployment source code
@@ -157,9 +158,10 @@ machine-learning-project-team4/
 │
 ├── results/                      # Model performance analysis
 │   ├── summary.csv                   # Comprehensive results table
-│   └── cm_.png                       # Confusion matrices for all models
+│   └── cm_*.png                      # Confusion matrices for all models
 │
 └── README.md                     # Project documentation
+```
 
 ---
 
