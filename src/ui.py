@@ -1,185 +1,156 @@
+import base64
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 import tempfile, os
-from main import analyze_emotion
-
-st.set_page_config(page_title="Voice Emotion", page_icon="", layout="centered")
+from main import analyze_emotion 
 
 
-st.markdown(
-    """
-    <style>
-    [data-testid="stAppViewContainer"] {
-      background:
-        radial-gradient(900px 600px at 72% 32%, rgba(255, 105, 180, 0.10), transparent 60%),
-        radial-gradient(800px 520px at 18% 28%, rgba(0, 170, 255, 0.12), transparent 55%),
-        linear-gradient(135deg, #0e1224 0%, #141a36 45%, #1a1a40 70%, #22183a 100%) !important;
+st.set_page_config(page_title="Voice Emotion", page_icon="", layout="wide")
 
-      background-attachment: fixed !important;
-      color: white !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-
+# session_state
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
+IMG_PATH = "/Users/ziyadalharbi/Twaiq Bootcamp/Twaiq_ptojects/machine-learning-project-team4/waves.jpeg"   
+def b64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
 
-# Home page
+img_b64 = b64(IMG_PATH)
+
+st.markdown(f"""
+<style>
+/* صورة الخلفية كعنصر ثابت */
+#_app_bg {{
+position: fixed;
+inset: 0;
+width: 100vw; height: 100vh;
+object-fit: cover;
+  z-index: -1;               
+}}
+
+html, body, .stApp, [data-testid="stAppViewContainer"] {{
+background: transparent !important;
+}}
+[data-testid="stHeader"], footer, #MainMenu {{ background: transparent !important; }}
+</style>
+<img id="_app_bg" src="data:image/jpeg;base64,{img_b64}" />
+""", unsafe_allow_html=True)
+
+# ====================== Home ======================
 def render_home():
-
+    # ===== Navbar =====
     st.markdown(
         """
         <style>
-        /* Background*/
-        [data-testid="stAppViewContainer"] {
-            background: radial-gradient(circle at 25% 25%, #0d1224, #131b3a, #0b0f1a) !important;
-            color: white !important;
-        }
-
-        
-        .hero-wrap {
-            max-width: 900px;
-            margin: 70px auto 10px auto;
-            padding: 0 24px;
-        }
-
-        /* Title*/
-        .hero-title {
-            font-size: 68px;
-            line-height: 1.06;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            text-align: left;
-            color: #e8ecff;
-            margin: 0 0 18px 0;
-        }
-        .hero-title .your {
-            background: linear-gradient(90deg,#00e5ff, #00bfff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero-title .voice {
-            background: linear-gradient(90deg,#9d4cff, #ff2aa1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Description*/
-        .subtitle {
-            font-size: 18px;
-            color: #c9d2ff;
-            text-align: left;
-            margin: 8px 0 26px 0;
-            max-width: 640px;
-        }
-
-        /* Buttons*/
-        .stButton > button {
-            padding: 12px 26px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            border: 1px solid rgba(255,255,255,0.18);
-            background: rgba(255,255,255,0.06);
-            color: #ffffff;
-            opacity: 0.5;
-            transition: transform .12s ease, opacity .7s ease, box-shadow .12s ease;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-        }
-        .stButton > button:hover { transform: translateY(-1px); opacity: .5; }
-
-        /*  (Get started)  */
-        .stButton button:first-of-type {
-            background: linear-gradient(90deg, #00c6ff, #8a3cff, #ff2aa1) !important;
-            border: none !important;
-            color: white !important;
-        }
-
-        
-        .wave-wrap {
-            position: fixed;
-            right: 4%;
-            bottom: 8%;
+        .navbar {
+            position: absolute;
+            top: 20px; 
+            left: 20px;
             display: flex;
-            gap: 6px;
-            align-items: flex-end;
+            gap: 12px;
         }
-        .wave {
-            width: 30px;
-            background: linear-gradient(180deg, #ff2aa1, #7a5cff, #00c6ff);
-            border-radius: 20px;
-            animation: sound 1.1s infinite ease-in-out;
+        .stButton > button {
+            padding: 6px 18px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            border: none !important;   /* يشيل الحواف */
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
         }
-        .wave:nth-child(1){ height: 30px; animation-delay: 0s; }
-        .wave:nth-child(2){ height: 50px; animation-delay: 0.2s; }
-        .wave:nth-child(3){ height: 70px; animation-delay: 0.4s; }
-        .wave:nth-child(4){ height: 50px; animation-delay: 0.6s; }
-        .wave:nth-child(5){ height: 30px; animation-delay: 0.8s; }
-
-        @keyframes sound {
-          0%   { transform: scaleY(0.4); }
-          50%  { transform: scaleY(1.2); }
-          100% { transform: scaleY(0.4); }
+        .stButton > button:hover {
+            background: linear-gradient(90deg,#00c6ff,#7a5cff,#ff2aa1);
         }
         </style>
         """,
         unsafe_allow_html=True
     )
 
-    
-    st.markdown(
-        """
-        <div class="hero-wrap">
-            <h1 class="hero-title">
-                Detect emotions from <span class="your">your</span> <span class="voice">voice</span> in seconds
-            </h1>
-            <p class="subtitle">
-                Upload or record a short clip . Our model classifies it into 
-                <b>happy</b>, <b>sad</b>, <b>angry</b>, <b>neutral</b>.
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Buttons in a row
-    col1, col2, col3 = st.columns([1, 1, 1])
+    col1, col2 = st.columns([0.12, 0.88])
     with col1:
-        if st.button("Get started", use_container_width=True, key="start"):
-            st.session_state.page = "analyze"
-    with col2:
-        if st.button("Learn more", use_container_width=True, key="learn"):
-            st.session_state.page = "learn"
-    with col3:
-        if st.button("About us", use_container_width=True, key="about"):
+        if st.button("About us", key="about_nav_top"):   
             st.session_state.page = "about"
+    with col2:
+        if st.button("Learn more", key="learn_nav_top"):  
+            st.session_state.page = "learn"
 
-    
+    # ===== Title=====
+    st.markdown(
+    """
+    <div style="margin-top:70px;">
+        <h1 style='text-align:left; font-size:25x; font-weight:650;'>
+            Detect 
+            <span style="background: linear-gradient(90deg,#00c6ff,#7a5cff,#ff2aa1);
+                         -webkit-background-clip: text;
+                         -webkit-text-fill-color: transparent;">
+                voice
+            </span> 
+            <span style="background: linear-gradient(90deg,#ff2aa1,#ff5cff,#ffa3ff);
+                         -webkit-background-clip: text;
+                         -webkit-text-fill-color: transparent;">
+                Emotions
+            </span> 
+            in seconds
+        </h1>
+        <p style='text-align:left; margin-bottom:20px; color:#c9d2ff; font-size:17px;'>
+            Upload or record a short clip. Our model classifies your emotions instantly.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
     st.markdown(
         """
-        <div class="wave-wrap">
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
-            <div class="wave"></div>
+        </h1>
+        
         </div>
         """,
         unsafe_allow_html=True
     )
 
+    if st.button("Get started", key="start"):
+        st.session_state.page = "analyze"
 
-# ======================
+    # ====== About us + Learn more ======
+    st.markdown("""
+    <div class="wave-wrap">
+        <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+        <div class="wave"></div><div class="wave"></div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
 #Analyze page
 # ======================
 def render_analyze():
+    st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, 
+            #050507 10%,     
+            #0d0820 60%,    
+            #1a1033 70%,    
+            #060a18 100%    
+        ) !important;
+        background-attachment: fixed;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
     import tempfile, os
+    st.markdown("""
+<style>
+#_app_bg { display:none !important; }
 
+.stApp {
+  background-color: #000000 !important; 
+  color: #ffffff !important;           
+}
+</style>
+""", unsafe_allow_html=True)
     st.markdown(
         """
         <style>
@@ -234,7 +205,7 @@ def render_analyze():
 
     if go:
         if not temp_file:
-            st.warning("حمّل ملف أو سجّل مقطع أولاً.")
+            st.warning("Download or record a clip first")
         else:
             with st.spinner("Analyzing..."):
                 
@@ -261,15 +232,40 @@ def render_analyze():
             except: pass
 
     st.markdown("---")
-    if st.button("⬅ Back to Home"): st.session_state.page = "home"
+    if st.button("Back"): st.session_state.page = "home"
 
 
 
 
-## ======================
 # Learn More page
 # ======================
 def render_learn():
+    st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, 
+            #050507 10%,     
+            #0d0820 60%,    
+            #1a1033 70%,    
+            #060a18 100%    
+        ) !important;
+        background-attachment: fixed;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+    st.markdown("""
+<style>
+#_app_bg { display:none !important; }
+
+.stApp {
+  background-color: #000000 !important; /* أسود سادة */
+  color: #ffffff !important;           /* نصوص بيضاء */
+}
+</style>
+""", unsafe_allow_html=True)
     st.markdown(
         """
         <style>
@@ -313,15 +309,39 @@ def render_learn():
         unsafe_allow_html=True
     )
 
-    if st.button("⬅ Back to Home"):
+    if st.button("Back"):
         st.session_state.page = "home"
 
-
-
-# ======================
 # About Us page
 # ======================
 def render_about():
+    st.markdown(
+    """
+    <style>
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, 
+            #050507 10%,     /* أسود أعمق */
+            #0d0820 60%,    /* بنفسجي غامق جدًا */
+            #1a1033 70%,    /* بنفسجي مزرق داكن */
+            #060a18 100%    /* أزرق كحلي غامق */
+        ) !important;
+        background-attachment: fixed;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+    st.markdown("""
+<style>
+#_app_bg { display:none !important; }
+
+.stApp {
+  background-color: #000000 !important; /* أسود سادة */
+  color: #ffffff !important;           /* نصوص بيضاء */
+}
+</style>
+""", unsafe_allow_html=True)
+
     st.markdown(
         """
         <style>
@@ -360,11 +380,9 @@ def render_about():
         unsafe_allow_html=True
     )
 
-    if st.button("⬅ Back to Home"):
+    if st.button(" Back"):
         st.session_state.page = "home"
 
-
-# ======================
 # Guidance
 # ======================
 if st.session_state.page == "home":
