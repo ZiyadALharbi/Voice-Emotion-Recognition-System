@@ -11,7 +11,7 @@ st.set_page_config(page_title="Voice Emotion", page_icon="", layout="wide")
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
-IMG_PATH = "waves.jpeg"   
+IMG_PATH = "sound_wave.gif"   
 def b64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
