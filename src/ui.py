@@ -1,7 +1,7 @@
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
 import tempfile, os
-# from inference import analyze_emotion 
+from main import analyze_emotion
 
 st.set_page_config(page_title="Voice Emotion", page_icon="", layout="centered")
 
@@ -239,8 +239,8 @@ def render_analyze():
             with st.spinner("Analyzing..."):
                 
                 # from inference import analyze_emotion
-                # result = analyze_emotion(temp_file)
-                result = {"success": True, "emotion": "happy", "confidence": 0.92, "emoji": "😄"}
+                result = analyze_emotion(temp_file)
+                # result = {"success": True, "emotion": "happy", "confidence": 0.92, "emoji": "😄"}
             if result.get("success"):
                 st.markdown(
                     f"<div class='glass res'><span class='emoji'>{result['emoji']}</span>"
@@ -248,6 +248,12 @@ def render_analyze():
                     f"<small>Confidence: {result['confidence']:.1%}</small></div>",
                     unsafe_allow_html=True
                 )
+
+                # Show detailed probabilities
+                if result.get('probabilities'):
+                    st.markdown("### Detailed Probabilities:")
+                    for emotion, prob in result['probabilities'].items():
+                        st.write(f"**{emotion.capitalize()}**: {prob:.1%}")
             else:
                 st.error(result.get("error","Unknown error"))
             try:
@@ -348,7 +354,7 @@ def render_about():
             <li>Raghad Al-Ghamdi</li>
             <li>Rawaa Sarti</li>
             <li>Maimouna Al-Awla</li>
-            <li>Ziad Al-Harbi</li>
+            <li>Ziyad Al-Harbi</li>
         </ul>
         """,
         unsafe_allow_html=True

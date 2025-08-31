@@ -7,7 +7,7 @@ class EmotionRunner:
         # Initialize the pipeline once
         self.pipeline = EmotionRecognitionPipeline()
 
-    def process_audio(self, audio_path): # Ziyad: add type
+    def process_audio(self, audio_path: str) -> dict: # Ziyad: add type
         """
         Main processing function called by UI
         
@@ -28,8 +28,16 @@ class EmotionRunner:
             return formatted_result
 
         except Exception as e:
+            print(f"Error in process_audio: {e}")  # Add this line to print the error
+            import traceback
+            traceback.print_exc() 
             return {
-                # Ziyad: add it
+                'success': False,
+                'error': f'Failed to process audio: {str(e)}',
+                'emotion': 'unknown',
+                'confidence': 0.0,
+                'probabilities': {},
+                'emoji': '❌'
             }
         
 
