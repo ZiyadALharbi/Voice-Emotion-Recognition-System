@@ -352,8 +352,8 @@ def render_about():
         <ul class="team-list">
             <li>Azzam Al-Jariwi</li>
             <li>Raghad Al-Ghamdi</li>
-            <li>Rawaa Sarti</li>
-            <li>Maimouna Al-Awla</li>
+            <li>Ruwaa Surrati</li>
+            <li>Maymoonah Alolah</li>
             <li>Ziyad Al-Harbi</li>
         </ul>
         """,
