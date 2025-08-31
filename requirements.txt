@@ -1,0 +1,9 @@
+streamlit
+audio-recorder-streamlit
+torch
+torchaudio
+xgboost
+joblib
+numpy
+pandas
+scikit-learn
