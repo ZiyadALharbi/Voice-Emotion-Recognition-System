@@ -88,19 +88,17 @@ graph TD
     E --> G[StandardScaler]
     E --> H[Config File]
   
-    D --> I[FeatureExtractor]
-    I --> J[Audio Preprocessing]
-    J --> K[Extract Features]
-    K --> L[Feature Vector 1584D]
+    D --> I[Extract Features]
+    I --> J[Feature Vector 1584D]
+    J --> K[Audio Preprocessing]
   
-    L --> M[Normalize Features]
-    M --> N[XGBoost Prediction]
-    N --> O[Get Probabilities]
-    O --> P[Select Best Emotion]
+    K --> L[XGBoost Prediction]
+    L --> M[Get Probabilities]
+    M --> N[Select Best Emotion]
   
-    P --> Q[Format Results]
-    Q --> R[Add Emoji]
-    R --> S[Display Results]
+    O --> P[Format Results]
+    P --> Q[Add Emoji]
+    Q --> R[Display Results]
 ```
 
 ### **Detailed Pipeline Steps**
